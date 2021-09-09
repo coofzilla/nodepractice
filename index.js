@@ -1,4 +1,5 @@
 const express = require("express");
+//if you mess with mongoose require, cluster may close, make sure to reconnect
 const mongoose = require("mongoose");
 const cookieSession = require("cookie-session");
 const passport = require("passport");

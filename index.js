@@ -16,6 +16,7 @@ mongoose.connect(keys.mongoURI, { useMongoClient: true });
 
 const app = express();
 
+//need to upgrade express and update syntax if want to remove this deprecation 
 app.use(bodyParser.json());
 app.use(
   cookieSession({

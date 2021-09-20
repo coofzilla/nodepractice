@@ -6,6 +6,7 @@ const Blog = mongoose.model("Blog");
 
 module.exports = (app) => {
   app.get("/api/blogs/:id", requireLogin, async (req, res) => {
+    //req.session === cookie session
     const blog = await Blog.findOne({
       _user: req.user.id,
       _id: req.params.id,

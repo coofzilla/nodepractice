@@ -1,4 +1,6 @@
 //setup told to start first by option object within package.json
+jest.setTimeout(10000);
+
 require("../models/User");
 
 const mongoose = require("mongoose");

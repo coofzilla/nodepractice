@@ -1,5 +1,5 @@
 //setup told to start first by option object within package.json
-jest.setTimeout(10000);
+jest.setTimeout(20000);
 
 require("../models/User");
 

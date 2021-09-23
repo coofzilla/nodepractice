@@ -1,12 +1,12 @@
-const puppeteer = require("puppeteer");
-const sessionFactory = require("../factories/sessionFactory");
-const userFactory = require("../factories/userFactory");
+const puppeteer = require('puppeteer');
+const sessionFactory = require('../factories/sessionFactory');
+const userFactory = require('../factories/userFactory');
 
 class CustomPage {
   static async build() {
     //create instance of browser
     const browser = await puppeteer.launch({
-      headless: false,
+      headless: true,
     });
     //create instance of page
     const page = await browser.newPage();
@@ -29,13 +29,13 @@ class CustomPage {
 
     //setCookie from puppeteer
     //get name from application/cookies in browser
-    await this.page.setCookie({ name: "session", value: session });
-    await this.page.setCookie({ name: "session.sig", value: sig });
-    await this.page.goto("localhost:3000/blogs");
+    await this.page.setCookie({ name: 'session', value: session });
+    await this.page.setCookie({ name: 'session.sig', value: sig });
+    await this.page.goto('http://localhost:3000/blogs');
     await this.page.waitFor('a[href="/auth/logout"]');
   }
 
-   getContentsOf(selector) {
+  async getContentsOf(selector) {
     return this.page.$eval(selector, (el) => el.innerHTML);
   }
 }

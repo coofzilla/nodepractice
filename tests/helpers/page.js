@@ -5,8 +5,10 @@ const userFactory = require('../factories/userFactory');
 class CustomPage {
   static async build() {
     //create instance of browser
+    //args is f/virtual machine settings w/travis 
     const browser = await puppeteer.launch({
       headless: true,
+      args: ['--no-sandbox'],
     });
     //create instance of page
     const page = await browser.newPage();

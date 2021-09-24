@@ -1,22 +1,22 @@
-const express = require("express");
+const express = require('express');
 //if you mess with mongoose require, cluster may close, make sure to reconnect
-const mongoose = require("mongoose");
-const cookieSession = require("cookie-session");
-const passport = require("passport");
-const bodyParser = require("body-parser");
-const keys = require("./config/keys");
+const mongoose = require('mongoose');
+const cookieSession = require('cookie-session');
+const passport = require('passport');
+const bodyParser = require('body-parser');
+const keys = require('./config/keys');
 
-require("./models/User");
-require("./models/Blog");
-require("./services/passport");
-require("./services/cache");
+require('./models/User');
+require('./models/Blog');
+require('./services/passport');
+require('./services/cache');
 
 mongoose.Promise = global.Promise;
 mongoose.connect(keys.mongoURI, { useMongoClient: true });
 
 const app = express();
 
-//need to upgrade express and update syntax if want to remove this deprecation 
+//need to upgrade express and update syntax if want to remove this deprecation
 app.use(bodyParser.json());
 app.use(
   cookieSession({
@@ -27,15 +27,15 @@ app.use(
 app.use(passport.initialize());
 app.use(passport.session());
 
-require("./routes/authRoutes")(app);
-require("./routes/blogRoutes")(app);
+require('./routes/authRoutes')(app);
+require('./routes/blogRoutes')(app);
 
-if (["production"].includes(process.env.NODE_ENV)) {
-  app.use(express.static("client/build"));
+if (['production', 'ci'].includes(process.env.NODE_ENV)) {
+  app.use(express.static('client/build'));
 
-  const path = require("path");
-  app.get("*", (req, res) => {
-    res.sendFile(path.resolve("client", "build", "index.html"));
+  const path = require('path');
+  app.get('*', (req, res) => {
+    res.sendFile(path.resolve('client', 'build', 'index.html'));
   });
 }
 

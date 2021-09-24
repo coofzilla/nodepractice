@@ -1,15 +1,15 @@
-const mongoose = require("mongoose");
-const redis = require("redis");
-const { promisify } = require("util");
+const mongoose = require('mongoose');
+const redis = require('redis');
+const { promisify } = require('util');
+const keys = require('../config/keys');
 
-const redisUrl = "redis://127.0.0.1:6379";
-const client = redis.createClient(redisUrl);
+const client = redis.createClient(keys.redisUrl);
 client.hget = promisify(client.hget);
 const exec = mongoose.Query.prototype.exec;
 
 mongoose.Query.prototype.cache = function (options = {}) {
   this.useCache = true;
-  this.hashKey = JSON.stringify(options.key || "");
+  this.hashKey = JSON.stringify(options.key || '');
 
   return this;
 };
@@ -39,7 +39,7 @@ mongoose.Query.prototype.exec = async function () {
   //otherwise, issue query and store the result in redis
   const result = await exec.apply(this, arguments);
   //for setting expiration of cache
-  client.hset(this.hashKey, key, JSON.stringify(result), "EX", 10);
+  client.hset(this.hashKey, key, JSON.stringify(result), 'EX', 10);
 
   return result;
 };
